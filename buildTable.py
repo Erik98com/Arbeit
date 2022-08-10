@@ -1,70 +1,52 @@
 import tkinter as tk
 
-calculation = "Addition"
-val1 = 0
+columns = "1"
 
 #zum Setzen der Variable calculation auf die Nutzerauswahl
 def callback(selection):
-    global calculation
-    calculation = selection
+    global columns
+    columns = int(selection)
 
-def calculate():
-    global calculation
-    val1 = input1.get()
-    val2 = input2.get()
-
-    # prüfen, ob Eingabe leer ist, bei leerer Eingabe Wert = 0
-    if not val1 == "":
-        val1 = float(input1.get())
-    else:
-        val1 = 0
-
-    if not val2 == "":
-        val2 = float(input2.get())
-    else:
-        val2 = 0
-
-    if calculation == "Addition":
-        output.config(text=val1+val2)
-    elif calculation == "Subtraktion":
-        output.config(text=val1-val2)
-    elif calculation == "Multiplikation":
-        output.config(text=val1*val2)
-    else:#Test, ob Eingabe2 == 0
-        try:
-            output.config(text=val1/val2)
-        except ZeroDivisionError:
-            output.config(text="Division durch 0 nicht möglich!")
-
+def buildTable():
+    global columns
+    rows = rowsEntry.get()
+    try:
+        rows = int(rows)
+    except:
+        rows = 1
+    for i in range(rows):  # Rows
+        for j in range(columns):  # Columns
+            b = tk.Entry(frameRight, text="")
+            b.grid(row=i+2, column=j+2)
 
 windows = tk.Tk()
 windows.geometry("1000x700")
 
-arithmeticOperations = ["Addition", "Subtraktion", "Multiplikation", "Division"]
+frameLeft = tk.Frame(windows)
+frameLeft.pack(anchor="n", side="left", padx=10, pady=10)
+
+frameRight = tk.Frame(windows)
+frameRight.pack(anchor="n", side="left", padx=10, pady=10)
+
+numberColumns = ["1", "2", "3", "4", "5"]
 
 pasteAsString = tk.StringVar(windows)
-pasteAsString.set(arithmeticOperations[0]) # Standardauswahl der Rechenoperation
+pasteAsString.set(numberColumns[0]) # Standardauswahl der Rechenoperation
 
-userSelection = tk.OptionMenu(windows, pasteAsString, *arithmeticOperations, command=callback) #Verweis auf callback()
+userSelection = tk.OptionMenu(frameLeft, pasteAsString, *numberColumns, command=callback) #Verweis auf callback()
 userSelection.config(font=('Helvetica', 12))
-userSelection.grid(row=0, column=2)
+userSelection.grid(row=1, column=1)
 
-label1 = tk.Label(windows, text='Zahl 1:  ')
+label1 = tk.Label(frameLeft, text='Wie viele Zeilen?: ')
 label1.grid(row=0, column=0)
 
-label2 = tk.Label(windows, text='Zahl 2:  ')
+label2 = tk.Label(frameLeft, text='Wie viele Spalten?: ')
 label2.grid(row=1, column=0)
 
-input1 = tk.Entry(windows)
-input1.grid(row=0, column=1)
+rowsEntry = tk.Entry(frameLeft)
+rowsEntry.grid(row=0, column=1)
 
-input2 = tk.Entry(windows)
-input2.grid(row=1, column=1)
-
-btShowResult = tk.Button(windows, text='Ergebnis', command=calculate) # Verweis auf Funktion calculate()
-btShowResult.grid(row=2, column=1)
-
-output = tk.Label(windows)
-output.grid(row=2, column=2)
+btCreateTable = tk.Button(frameLeft, text='Create Table', command=buildTable) # Verweis auf Funktion calculate()
+btCreateTable.grid(row=2, column=0)
 
 windows.mainloop()

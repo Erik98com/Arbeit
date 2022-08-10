@@ -1,15 +1,15 @@
 import tkinter as tk
 
-calculation = "Addition"
+columns = "Addition"
 val1 = 0
 
 #zum Setzen der Variable calculation auf die Nutzerauswahl
 def callback(selection):
-    global calculation
+    global columns
     calculation = selection
 
 def calculate():
-    global calculation
+    global columns
     val1 = input1.get()
     val2 = input2.get()
 
